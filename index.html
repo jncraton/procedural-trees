@@ -144,9 +144,9 @@
       ctx.lineWidth = document.querySelector('input[name=width]').value
 
       for (let i = 0; i < get('tree_count'); i++) {
-        const x = canvas.width/2 + (Math.random() -.5) * (canvas.width/2)
+        const x = canvas.width/2 + (Math.random() -.5) * (canvas.width)
         const y_bot = getHeight(x) - Math.random() * 50
-        const y_top = y_bot + 50 + Math.random() * 100
+        const y_top = y_bot + get('size') * 1.5 + Math.random() * get('size') * 2
         ctx.strokeLine(x, y_bot, x, y_top)
         doBranch(x, y_top, 90, 0)
       }
