@@ -42,6 +42,8 @@
       <label>Hilliness <input type=number name=hilliness value=3 max=10></label>
       <label>Ground color <input type=color name=ground_color value="#008000"></label>
       <label>Sky color <input type=color name=sky_color value="#000090"></label>
+      <label>Sun color <input type=color name=sun_color value="#FFFF00"></label>
+      <label>Sun position <input type=number name=sun_position value=0 min=0 max=10></label>
     </fieldset>
 
     <input type=button name=redraw value=Redraw>                    
@@ -105,6 +107,10 @@
       // Sky
       ctx.fillStyle = get('sky_color')
       ctx.fillRect(0,0,canvas.width,canvas.height)
+
+      // Sun
+      ctx.fillStyle = get('sun_color')
+      ctx.fillCircle(canvas.width/12 + get('sun_position') * canvas.width/12, canvas.height*.8, 50)
 
       // Ground
       ctx.fillStyle = get('ground_color')
