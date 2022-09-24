@@ -51,6 +51,7 @@
     <script>
     const canvas = document.querySelector('canvas')
     const ctx = canvas.getContext("2d")
+    let seed = 0
 
     function get(input) {
       let value = document.querySelector(`input[name=${input}]`).value
@@ -84,12 +85,16 @@
     }
 
     function getHeight(x) {
+      x = x + seed*canvas.width
+    
       return (100 + get('hilliness')*10*Math.sin(get('hills')*x/(canvas.width/(2*Math.PI)))) +
-      7*Math.sin(x/15) +
-      3*Math.cos(x/10)
+      7*Math.sin((seed+1)*x/15) +
+      3*Math.cos((seed+1)*x/10)
     }
 
     function render() {
+      seed = Math.random()
+    
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Scale and tranform
