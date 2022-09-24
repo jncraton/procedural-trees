@@ -39,6 +39,8 @@
       <legend>Scene</legend>
       <label for=tree_count>Count <input type=number name=tree_count value=3 max=20></label>
       <label>Hills <input type=number name=hills value=3 max=6></label>
+      <label>Ground color <input type=color name=ground_color value="#008000"></label>
+      <label>Sky color <input type=color name=sky_color value="#000090"></label>
     </fieldset>
 
     <input type=button name=redraw value=Redraw>                    
@@ -91,6 +93,13 @@
       ctx.resetTransform()
       ctx.scale(1, -1)
       ctx.translate(0, -canvas.height)
+
+      // Sky
+      ctx.fillStyle = get('sky_color')
+      ctx.fillRect(0,0,canvas.width,canvas.height)
+
+      // Ground
+      ctx.fillStyle = get('ground_color')
 
       ctx.beginPath()
       ctx.moveTo(canvas.width, getHeight(canvas.width))
