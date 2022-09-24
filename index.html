@@ -39,6 +39,7 @@
       <legend>Scene</legend>
       <label for=tree_count>Count <input type=number name=tree_count value=3 max=20></label>
       <label>Hills <input type=number name=hills value=3 max=6></label>
+      <label>Hilliness <input type=number name=hilliness value=3 max=10></label>
       <label>Ground color <input type=color name=ground_color value="#008000"></label>
       <label>Sky color <input type=color name=sky_color value="#000090"></label>
     </fieldset>
@@ -83,7 +84,9 @@
     }
 
     function getHeight(x) {
-      return 100 + 100*Math.sin(get('hills')*x/100)
+      return (100 + get('hilliness')*10*Math.sin(get('hills')*x/(canvas.width/(2*Math.PI)))) +
+      7*Math.sin(x/15) +
+      3*Math.cos(x/10)
     }
 
     function render() {
