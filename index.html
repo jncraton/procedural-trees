@@ -6,9 +6,9 @@
 
     <title></title>
     <style>
-    canvas {
-      display: block;
-      border: 1px solid black;
+    body {
+      margin: 0 auto;
+      width: 800px;
     }
     label {
       display: inline-block;
@@ -18,17 +18,25 @@
   </head>
 
   <body>
-    <label for=size>Size</label><input type=number name=size value=50>
-    <label for=width>Width</label><input type=number name=width value=5>
-    <label for=width>Branch Factor</label><input type=number name=branch-factor value=4 max=5>
-    <label for=width>Leaf Size</label><input type=number name=leaf-size value=20 max=100>
-    <br />
-    <label for=width>Wood Color</label><input type=color name=wood_color value="#A52A2A">
-    <label for=width>Leaf Color 1</label><input type=color name=leaf_color1 value="#008000">
-    <label for=width>Leaf Color 2</label><input type=color name=leaf_color2 value="#008000">
-    <label for=width>Leaf Color 3</label><input type=color name=leaf_color3 value="#008000">
+    <fieldset>
+      <legend>Branch Options</legend>
+      <label for=size>Length <input type=number name=size value=50></label>
+      <label for=width>Width <input type=number name=width value=5></label> 
+      <label for=width>Factor <input type=number name=branch-factor value=4 max=5></label>
+      <label for=width>Angle <input type=number name=branch_angle value=45 max=90></label>
+      <label for=width>Color <input type=color name=wood_color value="#A52A2A"></label>
+    </fieldset>
+    <fieldset>
+      <legend>Options</legend>
+      <label for=width>Size <input type=number name=leaf-size value=20 max=100></label>
+      <label for=width>Color 1 <input type=color name=leaf_color1 value="#008000"></label>
+      <label for=width>Color 2 <input type=color name=leaf_color2 value="#008000"></label>
+      <label for=width>Color 3 <input type=color name=leaf_color3 value="#008000"></label>
+    </fieldset>
+
+    <input type=button name=redraw value=Redraw>
     
-    <canvas width=800 height=600>
+    <canvas width=800 height=400>
     </canvas>
     <script>
     const canvas = document.querySelector('canvas')
@@ -48,7 +56,7 @@
       const branches = Math.floor(Math.random()*get('branch-factor'))
       if (branches > 0) {
         for (let i = 0; i < branches; i++) {
-          doBranch(next_x, next_y, angle + (Math.random() - .5) * 90, depth+1)
+          doBranch(next_x, next_y, angle + (Math.random() - .5) * 2 * get('branch_angle'), depth+1)
         }
       } else {
         ctx.fillStyle = get(`leaf_color${Math.floor(Math.random()*3)+1}`)
@@ -62,7 +70,7 @@
       // Scale and tranform
       ctx.resetTransform()
       ctx.scale(1, -1)
-      ctx.translate(0, -600)
+      ctx.translate(0, -canvas.height)
 
 
       ctx.strokeStyle = get('wood_color')
@@ -74,6 +82,7 @@
     }
 
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', render))
+    document.querySelector('input[name=redraw]').addEventListener('input', render)
     render()
     </script>
   </body>
