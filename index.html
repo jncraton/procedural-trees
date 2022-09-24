@@ -36,11 +36,12 @@
       <label for=width>Color 3 <input type=color name=leaf_color3 value="#008000"></label>
     </fieldset>
     <fieldset>
-      <legend>Tree</legend>
+      <legend>Scene</legend>
       <label for=tree_count>Count <input type=number name=tree_count value=3 max=20></label>
+      <label>Hills <input type=number name=hills value=3 max=6></label>
     </fieldset>
 
-    <input type=button name=redraw value=Redraw>
+    <input type=button name=redraw value=Redraw>                    
     
     <canvas width=800 height=400>
     </canvas>
@@ -79,6 +80,10 @@
       }
     }
 
+    function getHeight(x) {
+      return 100 + 100*Math.sin(get('hills')*x/100)
+    }
+
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -87,13 +92,23 @@
       ctx.scale(1, -1)
       ctx.translate(0, -canvas.height)
 
+      ctx.beginPath()
+      ctx.moveTo(canvas.width, getHeight(canvas.width))
+      ctx.lineTo(canvas.width, 0)
+      ctx.lineTo(0, 0)
+      ctx.lineTo(0, getHeight(0))
+
+      for (let x = 0; x < canvas.width; x+=10) {
+        ctx.lineTo(x, getHeight(x))
+      }
+      ctx.fill()
 
       ctx.strokeStyle = get('wood_color')
       ctx.lineWidth = document.querySelector('input[name=width]').value
 
       for (let i = 0; i < get('tree_count'); i++) {
         const x = canvas.width/2 + (Math.random() -.5) * (canvas.width/2)
-        const y_bot = Math.random() * 50
+        const y_bot = getHeight(x) - Math.random() * 50
         const y_top = y_bot + 50 + Math.random() * 100
         ctx.strokeLine(x, y_bot, x, y_top)
         doBranch(x, y_top, 90, 0)
