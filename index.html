@@ -23,21 +23,22 @@
     const canvas = document.querySelector('canvas')
     const ctx = canvas.getContext("2d")
 
-    function doBranch(x, y, size) {
-      if (size > 5) {
-        ctx.strokeLine(x, y, x+size, y+size)
-        ctx.strokeLine(x, y, x-size, y+size)
+    function doBranch(x, y, angle, depth) {
+      if (depth > 10) return 
 
-        if (Math.random() > .2) {
-          doBranch(x+size, y+size, size / 2)
-        } else {
-          ctx.fillCircle(x+size, y+size, 50)
+      const size = parseInt(document.querySelector('input[name=size]').value)
+    
+      const next_x = x+size*Math.cos(angle*Math.PI/180)
+      const next_y = y+size*Math.sin(angle*Math.PI/180)
+      ctx.strokeLine(x, y, next_x, next_y)
+
+      const branches = Math.floor(Math.random()*4)
+      if (branches > 0) {
+        for (let i = 0; i < branches; i++) {
+          doBranch(next_x, next_y, angle + (Math.random() - .5) * 90, depth+1)
         }
-        if (Math.random() > .2) { 
-          doBranch(x-size, y+size, size / 2)
-        } else {
-          ctx.fillCircle(x+size, y+size, 50)
-        }
+      } else {
+        ctx.fillCircle(next_x, next_y, 20)
       }
     }
 
@@ -55,11 +56,12 @@
       ctx.lineWidth = document.querySelector('input[name=width]').value
       ctx.strokeLine(canvas.width/2, 0, canvas.width/2, 150)
 
-      doBranch(canvas.width/2, 150, parseInt(document.querySelector('input[name=size]').value))
+      doBranch(canvas.width/2, 150, 45, 0)
+      doBranch(canvas.width/2, 150, 135, 0)
     }
 
     document.querySelectorAll('input').forEach(i => i.addEventListener('input', render))
-    setInterval(render, 100)
+    render()
     </script>
   </body>
 </html>
