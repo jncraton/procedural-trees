@@ -48,7 +48,13 @@
     const ctx = canvas.getContext("2d")
 
     function get(input) {
-      return document.querySelector(`input[name=${input}]`).value
+      let value = document.querySelector(`input[name=${input}]`).value
+
+      if (document.querySelector(`input[name=${input}]`).max) {
+        value = Math.min(value, parseInt(document.querySelector(`input[name=${input}]`).max))
+      }
+
+      return value
     }
 
     function doBranch(x, y, angle, depth) {
