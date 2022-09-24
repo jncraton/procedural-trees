@@ -44,6 +44,8 @@
       <label>Sky color <input type=color name=sky_color value="#000090"></label>
       <label>Sun color <input type=color name=sun_color value="#FFFF00"></label>
       <label>Sun position <input type=number name=sun_position value=0 min=0 max=10></label>
+      <label>Cloud size <input type=number name=cloud_size value=2 min=0 max=10></label>
+      <label>Cloud color <input type=color name=cloud_color value="#cccccc"></label>
     </fieldset>
 
     <input type=button name=redraw value=Redraw>                    
@@ -112,6 +114,18 @@
       ctx.fillStyle = get('sun_color')
       ctx.fillCircle(canvas.width/12 + get('sun_position') * canvas.width/12, canvas.height*.8, 50)
 
+      // Clouds
+      ctx.fillStyle = get('cloud_color')
+      for (let i = 0; i < 20; i++) {
+        let x = Math.random() * canvas.width
+        let y = Math.random() * canvas.height
+        
+        for (let j = 0; j < 6; j++) {
+          ctx.fillCircle(x + (Math.random()-.5) * 2 * get('cloud_size') * 10,
+                         y + (Math.random()-.5) * get('cloud_size') * 10, get('cloud_size') * 10)
+        }
+      }
+      
       // Ground
       ctx.fillStyle = get('ground_color')
 
