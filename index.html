@@ -23,6 +23,7 @@
       <label for=size>Length <input type=number name=size value=50></label>
       <label for=width>Width <input type=number name=width value=5></label> 
       <label for=width>Factor <input type=number name=branch-factor value=4 max=5></label>
+      <label for=width>Depth <input type=number name=branch_depth value=6 max=8></label>
       <label for=width>Angle <input type=number name=branch_angle value=45 max=90></label>
       <label for=width>Color <input type=color name=wood_color value="#A52A2A"></label>
     </fieldset>
@@ -58,8 +59,6 @@
     }
 
     function doBranch(x, y, angle, depth) {
-      if (depth > 8) return
-
       const next_x = x+get('size')*Math.cos(angle*Math.PI/180)
       const next_y = y+get('size')*Math.sin(angle*Math.PI/180)
       ctx.strokeLine(x, y, next_x, next_y)
@@ -68,7 +67,7 @@
       if (depth < 4) {
         branches = Math.max(branches, 2)
       }
-      if (branches > 0) {
+      if (branches > 0 && depth < get('branch_depth')) {
         for (let i = 0; i < branches; i++) {
           doBranch(next_x, next_y, angle + (Math.random() - .5) * 2 * get('branch_angle'), depth+1)
         }
