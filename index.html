@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title></title>
+    <style>
+    canvas {
+      display: block;
+      border: 1px solid black;
+    }
+    </style>
+    <script src="ctx2dext.js"></script>
+  </head>
+
+  <body>
+    <label for=size>Size</label><input type=number name=size value=50>
+    <label for=width>Width</label><input type=number name=width value=5>
+    <canvas width=800 height=600>
+    </canvas>
+    <script>
+    const canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext("2d")
+
+    function doBranch(x, y, size) {
+      if (size > 5) {
+        ctx.strokeLine(x, y, x+size, y+size)
+        ctx.strokeLine(x, y, x-size, y+size)
+
+        if (Math.random() > .2) {
+          doBranch(x+size, y+size, size / 2)
+        } else {
+          ctx.fillCircle(x+size, y+size, 50)
+        }
+        if (Math.random() > .2) { 
+          doBranch(x-size, y+size, size / 2)
+        } else {
+          ctx.fillCircle(x+size, y+size, 50)
+        }
+      }
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Scale and tranform
+      ctx.resetTransform()
+      ctx.scale(1, -1)
+      ctx.translate(0, -600)
+
+
+      ctx.strokeStyle = 'brown'
+      ctx.fillStyle = 'green'
+      ctx.lineWidth = document.querySelector('input[name=width]').value
+      ctx.strokeLine(canvas.width/2, 0, canvas.width/2, 150)
+
+      doBranch(canvas.width/2, 150, parseInt(document.querySelector('input[name=size]').value))
+    }
+
+    document.querySelectorAll('input').forEach(i => i.addEventListener('input', render))
+    setInterval(render, 100)
+    </script>
+  </body>
+</html>
